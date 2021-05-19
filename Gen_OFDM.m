@@ -33,6 +33,7 @@ fprintf('载波个数：');
 fprintf('Nc = %d\n',Num_carrier);
 %% 生成bit码
 inforSource = randi([0 1],1,Num_carrier*modulate_bit*Num_symbol_data);
+% inforSource = ones(1,Num_carrier*modulate_bit*Num_symbol_data);
 % save inforSource inforSource;
 data_temp1 = reshape(inforSource,modulate_bit,[]).';
 lteSymMap = [11 10 14 15 9 8 12 13 1 0 4 5 3 2 6 7];

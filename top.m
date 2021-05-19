@@ -10,22 +10,28 @@ up_sample = 8;
 C = 3e8;
 Tr = T_OFDM*Num_OFDM; % 脉冲时长
 fsr = 128e6; % 采用率
-Ba = 50e3; % 多普勒带宽是50kHz
+Ba = 500e3; % 多普勒带宽是50kHz
 Nf = 1000; % 频偏采样点数
 Nr = ceil(Tr*fsr); % 时间采样点数
 tr = (0:Nr-1)/fsr; % 时长
 %% 生成OFDM发射信号
 st = Gen_OFDM(Num_OFDM,B,T_OFDM);
 % 插值
-st = signal_interpret(st, 8);
+st = signal_interpret(st, 16);
+% figure;
+% fre = 0 : fsr*8/length(st): fsr*8 - fsr*8/length(st);
+% plot(fre, 20*log10(abs((fft(st)))));
 %% 生成模糊函数
-[AF_OFDM_cmp, AF_OFDM_abs, AF_OFDM_log] = AF_gen(st, Tr, fsr, Ba, Nf, 8);
+[AF_OFDM_cmp, AF_OFDM_abs, AF_OFDM_log] = AF_gen(st, Tr, fsr, Ba, Nf, 16);
 %% 生成LFM发射信号
 k = B/Tr;
 % fsr = fsr * 10;
 % Nr = ceil(Tr*fsr);
 % tr = (0:Nr-1)/fsr;
+tr = -Tr/2 : 1/fsr: Tr/2 - 1/fsr;
 LFM = exp(1i*pi*k*tr.^2);
 % 插值
-LFM = signal_interpret(LFM, 8);
-[AF_LFM_cmp, AF_LFM_abs, AF_LFM_log] = AF_gen(LFM, Tr, fsr, Ba, Nf, 8);
+LFM = signal_interpret(LFM, 16);
+% figure;
+% plot(fre, 20*log10(abs((fft(LFM)))));
+[AF_LFM_cmp, AF_LFM_abs, AF_LFM_log] = AF_gen(LFM, Tr, fsr, Ba, Nf, 16);
